@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  api:
+    build: ./
+    command: python manage.py run -h 0.0.0.0
+    volumes:
+      - ./:/app
+    ports:
+      - 5500:5000
+    env_file:
+      - ./.env
+    depends_on:
+      - db
+  db:
+    image: postgres:13-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - 5532:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=martinmorep
+
+volumes:
+  postgres_data:

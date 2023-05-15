@@ -2,6 +2,7 @@ import os
 from datetime import timedelta
 
 from flask import Flask, jsonify, request
+from flask_caching import Cache
 from flask_cors import CORS
 from flask_jwt_extended import (
     JWTManager,
@@ -31,6 +32,17 @@ jwt = JWTManager(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
+
+# Caching
+cache = Cache(
+    config={
+        "CACHE_TYPE": "filesystem",
+        "CACHE_DIR": "/var/martinmorepcache",
+        "CACHE_THRESHOLD": 20,
+        "CACHE_DEFAULT_TIMEOUT": 12 * 3600,
+    }
+)
+cache.init_app(app)
 
 
 @app.route("/api/v1/login", methods=["POST"])

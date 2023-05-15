@@ -1,10 +1,11 @@
 from flask import jsonify
 
-from app.main import app
+from app.main import app, cache
 from app.models import Post, Project
 
 
 @app.route("/api/v1/home", methods=["GET"])
+@cache.cached()
 def get_home_stuff():
     try:
         posts = (

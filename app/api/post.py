@@ -4,12 +4,13 @@ from flask import jsonify, request
 from flask_jwt_extended import jwt_required
 from sqlalchemy import false as sa_false
 
-from app.main import app, db
+from app.main import app, cache, db
 from app.models import Post
 from app.utils import build_meta, generate_slug
 
 
 @app.route("/api/v1/posts/<slug>", methods=["GET"])
+@cache.cached()
 def get_post(slug: int):
     try:
         is_active = request.args.get("is_active", None)
@@ -27,6 +28,7 @@ def get_post(slug: int):
 
 
 @app.route("/api/v1/posts", methods=["GET"])
+@cache.cached()
 def get_posts():
     try:
         is_active = request.args.get("is_active", None)

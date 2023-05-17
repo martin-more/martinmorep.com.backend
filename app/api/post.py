@@ -42,7 +42,7 @@ def get_posts():
                 Post.is_active if is_active else Post.is_active == sa_false()
             )
         posts = Post.query.filter(*filters).order_by(Post.id.desc()).all()
-        result = [post.to_json() for post in posts]
+        result = [post.to_home_json() for post in posts]
         return jsonify(result)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -90,7 +90,7 @@ def create_post():
         db.session.commit()
         post.meta_content = build_meta(post)
         db.session.commit()
-
+        cache.clear()
         return jsonify(post.to_json())
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -122,7 +122,7 @@ def update_post(post_id):
         post.content = request.json.get("content", None)
         post.meta_content = build_meta(post)
         db.session.commit()
-
+        cache.clear()
         return jsonify(post.to_json())
     except Exception as e:
         return jsonify({"error": str(e)}), 500

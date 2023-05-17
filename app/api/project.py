@@ -102,7 +102,7 @@ def create_project():
         db.session.commit()
         project.meta_content = build_meta(project)
         db.session.commit()
-
+        cache.clear()
         return jsonify(project.to_json())
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -143,7 +143,7 @@ def update_project(project_id):
         project.content = request.json.get("content", None)
         project.meta_content = build_meta(project)
         db.session.commit()
-
+        cache.clear()
         return jsonify(project.to_json())
     except Exception as e:
         return jsonify({"error": str(e)}), 500

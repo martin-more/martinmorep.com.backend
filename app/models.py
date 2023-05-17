@@ -36,12 +36,7 @@ class Post(db.Model, MarkdownableMixin):
         "is_active",
     ]
 
-    def to_json(self, attrs=None):
-        if attrs:
-            _json = {}
-            for attr in attrs:
-                _json[camel_case(attr)] = getattr(self, attr)
-                return _json
+    def to_json(self):
         return {
             "id": self.id,
             "title": self.title,
@@ -55,6 +50,18 @@ class Post(db.Model, MarkdownableMixin):
             "meta": self.meta_content,
             "content": self.content,
             "previewContent": self.preview_content,
+        }
+
+    def to_home_json(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "slug": self.slug,
+            "summary": self.summary,
+            "coverImage": self.cover_image,
+            "isFeatured": self.is_featured,
+            "isActive": self.is_active,
+            "publishedDate": self.published_date,
         }
 
 

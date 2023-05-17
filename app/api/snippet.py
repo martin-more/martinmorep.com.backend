@@ -87,7 +87,7 @@ def create_snippet():
         db.session.commit()
         snippet.meta_content = build_meta(snippet)
         db.session.commit()
-
+        cache.clear()
         return jsonify(snippet.to_json())
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -124,7 +124,7 @@ def update_snippet(snippet_id):
         snippet.content = request.json.get("content", None)
         snippet.meta_content = build_meta(snippet)
         db.session.commit()
-
+        cache.clear()
         return jsonify(snippet.to_json())
     except Exception as e:
         return jsonify({"error": str(e)}), 500

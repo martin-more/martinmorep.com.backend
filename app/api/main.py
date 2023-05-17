@@ -13,7 +13,7 @@ def get_home_stuff():
             .order_by(Post.id.desc())
             .all()
         )
-        posts = [post.to_json() for post in posts]
+        posts = [post.to_home_json() for post in posts]
         projects = (
             Project.query.filter(Project.is_featured, Project.is_active)
             .order_by(Project.id.desc())
